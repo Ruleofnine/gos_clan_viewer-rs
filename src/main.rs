@@ -1,7 +1,6 @@
 use chrono::{Date, Duration, FixedOffset, Local, TimeZone};
 use clap::Parser;
 use owo_colors::{AnsiColors, OwoColorize};
-// use owo_colors::colors::{Green, Red};
 use regex::Regex;
 use soup::prelude::*;
 use std::fmt;
@@ -12,7 +11,7 @@ use std::path::Path;
 #[command(author, version, about, long_about = None)]
 struct Args {
     ///Path to the file
-    #[arg(required = true)]
+    #[arg(required = false,default_value_t=String::from("example.html"))]
     path: String,
     ///Days to be considered inactive
     #[arg(short, long, default_value_t = 30)]
@@ -41,10 +40,11 @@ impl fmt::Display for DateStatus {
 struct Player {
     username: String,
     user_id: usize,
+    //chat rank: usize,
     last_login: DateStatus,
     last_action: DateStatus,
     login_status: Status,
-    action_status: Status, // chat_rank: usize,
+    action_status: Status, 
     login_color: AnsiColors,
     action_color: AnsiColors,
 }
@@ -142,7 +142,7 @@ impl Player {
                 }
             }
             DateStatus::NONE() => {
-                self.action_color = AnsiColors::Magenta;
+                self.action_color = AnsiColors::Red;
                 Status::NONE
             }
         }
